@@ -1,7 +1,7 @@
-package com.study.demo.service;
+package com.study.study_project.service;
 
-import com.kh.demo.domain.dto.UserDTO;
-import com.kh.demo.mapper.UserMapper;
+import com.study.study_project.domain.dto.UserDTO;
+import com.study.study_project.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

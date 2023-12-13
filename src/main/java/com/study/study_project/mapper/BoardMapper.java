@@ -1,7 +1,7 @@
-package com.study.demo.mapper;
+package com.study.study_project.mapper;
 
-import com.kh.demo.domain.dto.BoardDTO;
-import com.kh.demo.domain.dto.Criteria;
+import com.study.study_project.domain.dto.BoardDTO;
+import com.study.study_project.domain.dto.Criteria;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

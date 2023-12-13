@@ -1,7 +1,7 @@
-package com.study.demo.controller;
+package com.study.study_project.controller;
 
-import com.kh.demo.domain.dto.UserDTO;
-import com.kh.demo.service.UserService;
+import com.study.study_project.domain.dto.UserDTO;
+import com.study.study_project.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

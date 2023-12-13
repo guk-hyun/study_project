@@ -1,6 +1,6 @@
-package com.study.demo.service;
+package com.study.study_project.service;
 
-import com.kh.demo.domain.dto.UserDTO;
+import com.study.study_project.domain.dto.UserDTO;
 
 public interface UserService {
 	boolean join(UserDTO user);

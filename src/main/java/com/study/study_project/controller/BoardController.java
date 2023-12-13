@@ -1,9 +1,9 @@
-package com.study.demo.controller;
+package com.study.study_project.controller;
 
-import com.kh.demo.domain.dto.BoardDTO;
-import com.kh.demo.domain.dto.Criteria;
-import com.kh.demo.domain.dto.PageDTO;
-import com.kh.demo.service.BoardService;
+import com.study.study_project.domain.dto.BoardDTO;
+import com.study.study_project.domain.dto.Criteria;
+import com.study.study_project.domain.dto.PageDTO;
+import com.study.study_project.service.BoardService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

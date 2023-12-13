@@ -1,8 +1,8 @@
-package com.study.demo.service;
+package com.study.study_project.service;
 
-import com.kh.demo.domain.dto.Criteria;
-import com.kh.demo.domain.dto.ReplyDTO;
-import com.kh.demo.domain.dto.ReplyPageDTO;
+import com.study.study_project.domain.dto.Criteria;
+import com.study.study_project.domain.dto.ReplyDTO;
+import com.study.study_project.domain.dto.ReplyPageDTO;
 
 public interface ReplyService {
 	boolean regist(ReplyDTO reply);

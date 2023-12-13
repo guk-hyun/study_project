@@ -1,6 +1,6 @@
-package com.study.demo.mapper;
+package com.study.study_project.mapper;
 
-import com.kh.demo.domain.dto.FileDTO;
+import com.study.study_project.domain.dto.FileDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.study.demo.mapper;
+package com.study.study_project.mapper;
 
-import com.kh.demo.domain.dto.UserDTO;
+import com.study.study_project.domain.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
