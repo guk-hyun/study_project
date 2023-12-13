@@ -1,9 +1,9 @@
-package com.study.demo.controller;
+package com.study.study_project.controller;
 
-import com.kh.demo.domain.dto.Criteria;
-import com.kh.demo.domain.dto.ReplyDTO;
-import com.kh.demo.domain.dto.ReplyPageDTO;
-import com.kh.demo.service.ReplyService;
+import com.study.study_project.domain.dto.Criteria;
+import com.study.study_project.domain.dto.ReplyDTO;
+import com.study.study_project.domain.dto.ReplyPageDTO;
+import com.study.study_project.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

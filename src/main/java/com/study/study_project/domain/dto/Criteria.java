@@ -1,4 +1,4 @@
-package com.study.demo.domain.dto;
+package com.study.study_project.domain.dto;
 
 import lombok.Data;
 import org.springframework.web.util.UriComponentsBuilder;

@@ -1,8 +1,8 @@
-package com.study.demo.service;
+package com.study.study_project.service;
 
-import com.kh.demo.domain.dto.BoardDTO;
-import com.kh.demo.domain.dto.Criteria;
-import com.kh.demo.domain.dto.FileDTO;
+import com.study.study_project.domain.dto.BoardDTO;
+import com.study.study_project.domain.dto.Criteria;
+import com.study.study_project.domain.dto.FileDTO;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;

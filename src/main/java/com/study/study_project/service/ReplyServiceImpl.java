@@ -1,9 +1,9 @@
-package com.study.demo.service;
+package com.study.study_project.service;
 
-import com.kh.demo.domain.dto.Criteria;
-import com.kh.demo.domain.dto.ReplyDTO;
-import com.kh.demo.domain.dto.ReplyPageDTO;
-import com.kh.demo.mapper.ReplyMapper;
+import com.study.study_project.domain.dto.Criteria;
+import com.study.study_project.domain.dto.ReplyDTO;
+import com.study.study_project.domain.dto.ReplyPageDTO;
+import com.study.study_project.mapper.ReplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

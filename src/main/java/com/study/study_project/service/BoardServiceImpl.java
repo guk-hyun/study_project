@@ -1,11 +1,11 @@
-package com.study.demo.service;
+package com.study.study_project.service;
 
-import com.kh.demo.domain.dto.BoardDTO;
-import com.kh.demo.domain.dto.Criteria;
-import com.kh.demo.domain.dto.FileDTO;
-import com.kh.demo.mapper.BoardMapper;
-import com.kh.demo.mapper.FileMapper;
-import com.kh.demo.mapper.ReplyMapper;
+import com.study.study_project.domain.dto.BoardDTO;
+import com.study.study_project.domain.dto.Criteria;
+import com.study.study_project.domain.dto.FileDTO;
+import com.study.study_project.mapper.BoardMapper;
+import com.study.study_project.mapper.FileMapper;
+import com.study.study_project.mapper.ReplyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
