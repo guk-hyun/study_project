@@ -4,11 +4,13 @@ import lombok.Data;
 
 @Data
 public class BoardDTO {
-	private Long boardnum;
-	private String boardtitle;
-	private String boardcontents;
-	private String regdate;
-	private String updatedate;
-	private int readcount;
-	private String userid;
+	private Long boardNum;
+	private String userId;
+	private String boardTitle;
+	private String boardCategory;
+	private String boardFoodCategory;
+	private String boardContents;
+	private String boardRegdate;
+	private String boardUpdate;
+	private int boardViewcnt;
 }

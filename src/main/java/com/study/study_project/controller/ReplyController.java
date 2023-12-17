@@ -22,7 +22,7 @@ public class ReplyController {
 	@PostMapping(value = "regist", consumes = "application/json")
 	public ResponseEntity<String> regist(@RequestBody ReplyDTO reply){
 		boolean check = service.regist(reply);
-		Long replynum = service.getLastNum(reply.getUserid());
+		Long replynum = service.getLastNum(reply.getUserId());
 		
 		return check ? new ResponseEntity<String>(replynum+"",HttpStatus.OK) :
 			new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);

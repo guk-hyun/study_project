@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class FileDTO {
-	private String systemname;
-	private String orgname;
-	private Long boardnum;
+	private String sysName;
+	private String orgName;
+	private Long boardCategory;
+	private Long boardNum;
 }
