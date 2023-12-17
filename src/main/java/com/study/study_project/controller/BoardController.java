@@ -48,7 +48,7 @@ public class BoardController {
 	public String write(BoardDTO board, MultipartFile[] files, Criteria cri) throws Exception{
 		Long boardnum = 0l;
 		if(service.regist(board, files)) {
-			boardnum = service.getLastNum(board.getUserid());
+			boardnum = service.getLastNum(board.getUserId());
 			return "redirect:/board/get"+cri.getListLink()+"&boardnum="+boardnum;
 		}
 		else {
@@ -68,7 +68,7 @@ public class BoardController {
 		String requestURI = req.getRequestURI();
 		if(requestURI.contains("/get")) {
 			//게시글의 작성자가 로그인된 유저가 아닐 때
-			if(!board.getUserid().equals(loginUser)) {
+			if(!board.getUserId().equals(loginUser)) {
 				//쿠키 검사
 				Cookie[] cookies = req.getCookies();
 				Cookie read_board = null;
@@ -105,7 +105,7 @@ public class BoardController {
 		}
 		System.out.println("controller : "+updateCnt);
 		if(service.modify(board, files, updateCnt)) {
-			return "redirect:/board/get"+cri.getListLink()+"&boardnum="+board.getBoardnum();
+			return "redirect:/board/get"+cri.getListLink()+"&boardnum="+board.getBoardNum();
 		}
 		else {
 			return "redirect:/board/list"+cri.getListLink();

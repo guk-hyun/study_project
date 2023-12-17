@@ -4,10 +4,11 @@ import lombok.Data;
 
 @Data
 public class ReplyDTO {
-	private Long replynum;
-	private String replycontents;
-	private String regdate;
-	private String updatedate;
-	private String userid;
-	private Long boardnum;
+	private Long replyNum;
+	private String userId;
+	private Long boardCategory;
+	private Long boardNum;
+	private String replyContents;
+	private String replyRegdate;
+	private String replyUpdate;
 }
