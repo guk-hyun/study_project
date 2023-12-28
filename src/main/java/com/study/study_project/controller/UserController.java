@@ -25,10 +25,10 @@ public class UserController {
 //	POST
 //	/user/login		넘겨진 파라미터로 로그인 처리
 //	/user/join		넘겨진 데이터들로 회원가입 처리
-	
+
 	@GetMapping("join")
 	public void replace() {}
-	
+
 	@PostMapping("join")
 	public String join(UserDTO user, RedirectAttributes ra) {
 		if(service.join(user)) {
@@ -36,25 +36,27 @@ public class UserController {
 		}
 		return "redirect:/";
 	}
-	
+	@GetMapping("login")
+	public void replaceLogin(){}
+
 	@PostMapping("login")
 	public String login(String userid, String userpw, HttpServletRequest req) {
 		UserDTO loginUser = service.login(userid, userpw);
 		if(loginUser != null) {
 			req.getSession().setAttribute("loginUser", loginUser.getUserid());
-			return "redirect:/board/list";
+			return "redirect:/";
 		}
 		else {
 			return "redirect:/";
 		}
 	}
-	
+
 	@GetMapping("logout")
 	public String logout(HttpServletRequest req) {
 		req.getSession().invalidate();
 		return "redirect:/";
 	}
-	
+
 	@GetMapping("checkid")
 	@ResponseBody
 	public String checkId(String userid) {
