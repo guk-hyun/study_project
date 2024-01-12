@@ -1,0 +1,34 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.demo.mapper.UserMapper">
+
+	<insert id="insertUser" parameterType="com.kh.demo.domain.dto.UserDTO">
+		INSERT INTO user (user_id, user_pw, user_name, user_nicname, user_gender, user_birth,user_interest_food, joindate)
+		VALUES (#{userid}, #{userpw}, #{userNickname}, #{usebirth} , #{usergender}, #{userinterestFood}, #{joindate})
+	</insert>
+
+	<select id="findById">
+		SELECT *
+		FROM user
+		WHERE user_id = #{userId}
+	</select>
+
+
+	<select id="findByNickname">
+		SELECT *
+		FROM user
+		WHERE user_nickname = #{userNickname}
+	</select>
+
+	<update id="updateUser">
+		UPDATE user
+		SET user_nickname=#{userNickname}, user_pw=#{userPw}
+		WHERE user_id=#{userId}
+	</update>
+
+
+
+
+
+</mapper>
+

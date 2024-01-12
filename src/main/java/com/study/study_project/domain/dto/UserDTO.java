@@ -10,11 +10,11 @@ public class UserDTO {
     private String userid;
     private String userpw;
     private String username;
-    private String usernickname;
+    private String userNickname;
     private String userbirth;
     private String usergender;
-    private String userinterest;
-    private LocalDateTime userjoindate;
+    private String userInterestFood;
+    private LocalDateTime joindate;
 }
 
 //아이디(중복 x)
