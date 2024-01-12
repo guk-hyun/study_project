@@ -1,0 +1,43 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.study_project.mapper.ReplyMapper">
+	<insert id="insertReply">
+		insert into reply(reply_content, user_id, board_num)
+		values(#{replyContent},#{userId},#{boardNum})
+	</insert>
+	
+	<update id="updateReply">
+		update reply set reply_content=#{replyContent}, reply_update=now()
+		where reply_num=#{replyNum}
+	</update>
+	
+	<delete id="deleteReply">
+		delete from reply where reply_num=#{replyNum}
+	</delete>
+	<delete id="deleteByBoardnum">
+		delete from reply where board_num=#{boardNum}
+	</delete>
+	
+	<select id="getTotal">
+		select count(*) from reply where board_num=#{board_num}
+	</select>
+	<select id="getRecentReply">
+		<![CDATA[
+			select count(*) from reply where board_num=#{boardNum} and timestampdiff(HOUR,reply_regdate,now())<1
+		]]>
+	</select>
+	<select id="getLastNum">
+		select max(reply_num) from reply where user_id=#{userId}
+	</select>
+	<select id="getList">
+		select * from reply where board_num=#{boardNum}
+		limit #{cri.startrow},#{cri.amount}
+	</select>
+</mapper>
+
+
+
+
+
+
+

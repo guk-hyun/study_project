@@ -8,7 +8,7 @@ public class ReplyDTO {
 	private String userId;
 	private Long boardCategory;
 	private Long boardNum;
-	private String replyContents;
+	private String replyContent;
 	private String replyRegdate;
 	private String replyUpdate;
 }

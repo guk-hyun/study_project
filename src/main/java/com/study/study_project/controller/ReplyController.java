@@ -29,20 +29,20 @@ public class ReplyController {
 	}
 	
 	// /reply/pages/100/1 : 100번 게시글의 1 페이지 댓글 리스트
-	@GetMapping(value = "/pages/{boardnum}/{pagenum}")
+	@GetMapping(value = "/pages/{boardNum}/{pagenum}")
 	public ResponseEntity<ReplyPageDTO> getList(
-			@PathVariable("boardnum") Long boardnum,
+			@PathVariable("boardNum") Long boardNum,
 			@PathVariable("pagenum") int pagenum
 	){
 		Criteria cri = new Criteria(pagenum, 5);
-		return new ResponseEntity<ReplyPageDTO>(service.getList(cri, boardnum), HttpStatus.OK);
+		return new ResponseEntity<ReplyPageDTO>(service.getList(cri, boardNum), HttpStatus.OK);
 	}
 	
 	//@DeleteMapping : REST 방식의 설계 이용 시 삭제 요청을 받을 때 사용하는 매핑 방식
 	//produces : 이 메소드가 호출된 결과로 생산해낼 데이터의 타입(돌려주는 ResponseBody의 데이터 타입)
-	@DeleteMapping(value = "{replynum}", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> remove(@PathVariable("replynum") Long replynum){
-		return service.remove(replynum) ?
+	@DeleteMapping(value = "{replyNum}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> remove(@PathVariable("replyNum") Long replyNum){
+		return service.remove(replyNum) ?
 				new ResponseEntity<String>("success",HttpStatus.OK) :
 				new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
@@ -52,7 +52,7 @@ public class ReplyController {
 	//PATCH
 	//	자원의 일부 수정, 수정할 필드만 전송
 //	@PatchMapping(value = "{replynum}", consumes = "application/json")
-	@PutMapping(value = "{replynum}", consumes = "application/json")
+	@PutMapping(value = "{replyNum}", consumes = "application/json")
 	public ResponseEntity<String> modify(@RequestBody ReplyDTO reply){
 		return service.modify(reply) ? 
 				new ResponseEntity<String>("success",HttpStatus.OK) :
