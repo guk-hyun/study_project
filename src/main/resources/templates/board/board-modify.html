@@ -1,0 +1,499 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Untitled</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<noscript><link rel="stylesheet" th:href="@{/assets/css/noscript.css}" /></noscript>
+	<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+	<link rel="stylesheet" th:href="@{/board/css/layout.css}">
+</head>
+<body class="right-sidebar is-preload">
+<div id="page-wrapper">
+
+	<!-- Header -->
+	<div id="header">
+		<th:block th:replace="~{layout/header::header(${session.loginUser})}"></th:block>
+	</div>
+
+	<!-- Main -->
+	<div class="wrapper style1">
+
+		<div class="container">
+			<div class="row gtr-200">
+				<div class="col-8 col-12-mobile" id="content">
+					<article id="main">
+						<header>
+							<h2><a href="#">게시판</a></h2>
+							<p>
+								글 수정
+							</p>
+						</header>
+						<!-- == 추가 시작 == -->
+						<div id="wrap">
+							<form id="boardForm" method="post" name="boardForm" th:action="@{/board/modify}" enctype="multipart/form-data">
+								<input type="hidden" th:value="${cri.pagenum}" name="pagenum">
+								<input type="hidden" th:value="${cri.amount}" name="amount">
+								<input type="hidden" th:value="${cri.type}" name="type">
+								<input type="hidden" th:value="${cri.keyword}" name="keyword">
+								<input type="hidden" th:value="${board.boardNum}" name="boardNum">
+								<table style="border-collapse: collapse;" border="1">
+									<tr style="height:30px;">
+										<th style="text-align:center; width:150px;">제목</th>
+										<td>
+											<input type="text" name="boardTitle" size="50" maxlength="50" th:value="${board.boardTitle}">
+										</td>
+									</tr>
+									<tr style="height:30px;">
+										<th style="text-align:center; width:150px;">작성자</th>
+										<td>
+											<input type="text" name="userId" size="50" maxlength="50" th:value="${session.loginUser}" readonly>
+										</td>
+									</tr>
+									<tr style="height:300px;">
+										<th style="text-align:center; width:150px;">내 용</th>
+										<td>
+											<textarea name="boardContent" style="width:700px;height:290px;resize:none;">[[${board.boardContent}]]</textarea>
+										</td>
+									</tr>
+									<tr th:class="${'r'+fileStat.index}" th:if="${files != null and files.size() > 0}" th:each="file : ${files}">
+										<th>파일 첨부[[${fileStat.index+1}]]</th>
+										<td th:class="${'file'+fileStat.index+'_cont'}">
+											<div style="float:left;">
+												<input type="file" name="files" th:id="${'file'+fileStat.index}" style="display:none">
+												<span th:id="${'file'+fileStat.index+'name'}" th:text="${file.orgName}"></span>
+											</div>
+											<div style="float:right; margin-right: 100px;">
+												<!-- <a href="javascript:upload('file5','DateTIMEUUID.png')"> -->
+												<a th:href="'javascript:upload(\'file'+${fileStat.index}+'\',\''+${file.sysName}+'\')'">파일 선택</a>
+												<a th:href="'javascript:cancelFile(\'file'+${fileStat.index}+'\',\''+${file.sysName}+'\')'">첨부 삭제</a>
+											</div>
+											<input type="hidden" name="orgName" th:value="${file.orgName}">
+											<th:block th:with="sar=${file.orgName.split('[.]')}">
+												<th:block th:with="ext=${sar[sar.length-1]}">
+													<img th:if="${ext == 'jpg' or ext == 'jpeg' or ext == 'png' or ext == 'gif' or ext == 'webp'}" th:src="@{/board/thumbnail (systemname=${file.sysName})}" class="thumbnail">
+												</th:block>
+											</th:block>
+										</td>
+									</tr>
+									<tr th:class="${'r'+files.size()}">
+										<th>파일 첨부[[${files.size()+1}]]</th>
+										<td th:class="${'file'+files.size()+'_cont'}">
+											<div style="float:left;">
+												<input type="file" name="files" th:id="${'file'+files.size()}" style="display:none">
+												<span th:id="${'file'+files.size()+'name'}">선택된 파일 없음</span>
+											</div>
+											<div style="float:right; margin-right: 100px;">
+												<!-- <a href="javascript:upload('file9','')"> -->
+												<a th:href="'javascript:upload(\'file'+${files.size()}+'\',\'\')'">파일 선택</a>
+												<!-- <a href="javascript:cancelFile('file9','')"> -->
+												<a th:href="'javascript:cancelFile(\'file'+${files.size()}+'\',\'\')'">첨부 삭제</a>
+											</div>
+										</td>
+									</tr>
+									<input type="hidden" value="" name="updateCnt" id="updateCnt">
+								</table>
+							</form>
+							<table class="btn_area">
+								<tr align="right" valign="middle">
+									<td>
+										<a href="javascript:document.boardForm.submit()">수정완료</a>
+										<a th:href="${'/board/list'+cri.listLink}">목록</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<!-- == 추가 끝 == -->
+					</article>
+				</div>
+				<div class="col-4 col-12-mobile" id="sidebar">
+					<hr class="first" />
+					<section>
+						<header>
+							<h3><a href="#">Accumsan sed penatibus</a></h3>
+						</header>
+						<p>
+							Dolor sed fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
+							porttitor phasellus tempus cubilia ultrices tempor sagittis  tellus ante diam nec penatibus dolor cras
+							magna tempus feugiat veroeros.
+						</p>
+						<footer>
+							<a href="#" class="button">Learn More</a>
+						</footer>
+					</section>
+					<hr />
+					<section>
+						<header>
+							<h3><a href="#">Sed lorem etiam consequat</a></h3>
+						</header>
+						<p>
+							Tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
+						</p>
+						<div class="row gtr-50">
+							<div class="col-4">
+								<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>
+							</div>
+							<div class="col-8">
+								<h4>Nibh sed cubilia</h4>
+								<p>
+									Amet nullam fringilla nibh nulla convallis tique ante proin.
+								</p>
+							</div>
+							<div class="col-4">
+								<a href="#" class="image fit"><img src="images/pic11.jpg" alt="" /></a>
+							</div>
+							<div class="col-8">
+								<h4>Proin sed adipiscing</h4>
+								<p>
+									Amet nullam fringilla nibh nulla convallis tique ante proin.
+								</p>
+							</div>
+							<div class="col-4">
+								<a href="#" class="image fit"><img src="images/pic12.jpg" alt="" /></a>
+							</div>
+							<div class="col-8">
+								<h4>Lorem feugiat magna</h4>
+								<p>
+									Amet nullam fringilla nibh nulla convallis tique ante proin.
+								</p>
+							</div>
+							<div class="col-4">
+								<a href="#" class="image fit"><img src="images/pic13.jpg" alt="" /></a>
+							</div>
+							<div class="col-8">
+								<h4>Sed tempus fringilla</h4>
+								<p>
+									Amet nullam fringilla nibh nulla convallis tique ante proin.
+								</p>
+							</div>
+							<div class="col-4">
+								<a href="#" class="image fit"><img src="images/pic14.jpg" alt="" /></a>
+							</div>
+							<div class="col-8">
+								<h4>Malesuada fermentum</h4>
+								<p>
+									Amet nullam fringilla nibh nulla convallis tique ante proin.
+								</p>
+							</div>
+						</div>
+						<footer>
+							<a href="#" class="button">Magna Adipiscing</a>
+						</footer>
+					</section>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<article class="col-4 col-12-mobile special">
+					<a href="#" class="image featured"><img src="images/pic07.jpg" alt="" /></a>
+					<header>
+						<h3><a href="#">Gravida aliquam penatibus</a></h3>
+					</header>
+					<p>
+						Amet nullam fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
+						porttitor phasellus tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
+					</p>
+				</article>
+				<article class="col-4 col-12-mobile special">
+					<a href="#" class="image featured"><img src="images/pic08.jpg" alt="" /></a>
+					<header>
+						<h3><a href="#">Sed quis rhoncus placerat</a></h3>
+					</header>
+					<p>
+						Amet nullam fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
+						porttitor phasellus tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
+					</p>
+				</article>
+				<article class="col-4 col-12-mobile special">
+					<a href="#" class="image featured"><img src="images/pic09.jpg" alt="" /></a>
+					<header>
+						<h3><a href="#">Magna laoreet et aliquam</a></h3>
+					</header>
+					<p>
+						Amet nullam fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
+						porttitor phasellus tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
+					</p>
+				</article>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Footer -->
+	<div id="footer">
+		<div class="container">
+			<div class="row">
+
+				<!-- Tweets -->
+				<section class="col-4 col-12-mobile">
+					<header>
+						<h2 class="icon brands fa-twitter circled"><span class="label">Tweets</span></h2>
+					</header>
+					<ul class="divided">
+						<li>
+							<article class="tweet">
+								Amet nullam fringilla nibh nulla convallis tique ante sociis accumsan.
+								<span class="timestamp">5 minutes ago</span>
+							</article>
+						</li>
+						<li>
+							<article class="tweet">
+								Hendrerit rutrum quisque.
+								<span class="timestamp">30 minutes ago</span>
+							</article>
+						</li>
+						<li>
+							<article class="tweet">
+								Curabitur donec nulla massa laoreet nibh. Lorem praesent montes.
+								<span class="timestamp">3 hours ago</span>
+							</article>
+						</li>
+						<li>
+							<article class="tweet">
+								Lacus natoque cras rhoncus curae dignissim ultricies. Convallis orci aliquet.
+								<span class="timestamp">5 hours ago</span>
+							</article>
+						</li>
+					</ul>
+				</section>
+
+				<!-- Posts -->
+				<section class="col-4 col-12-mobile">
+					<header>
+						<h2 class="icon solid fa-file circled"><span class="label">Posts</span></h2>
+					</header>
+					<ul class="divided">
+						<li>
+							<article class="post stub">
+								<header>
+									<h3><a href="#">Nisl fermentum integer</a></h3>
+								</header>
+								<span class="timestamp">3 hours ago</span>
+							</article>
+						</li>
+						<li>
+							<article class="post stub">
+								<header>
+									<h3><a href="#">Phasellus portitor lorem</a></h3>
+								</header>
+								<span class="timestamp">6 hours ago</span>
+							</article>
+						</li>
+						<li>
+							<article class="post stub">
+								<header>
+									<h3><a href="#">Magna tempus consequat</a></h3>
+								</header>
+								<span class="timestamp">Yesterday</span>
+							</article>
+						</li>
+						<li>
+							<article class="post stub">
+								<header>
+									<h3><a href="#">Feugiat lorem ipsum</a></h3>
+								</header>
+								<span class="timestamp">2 days ago</span>
+							</article>
+						</li>
+					</ul>
+				</section>
+
+				<!-- Photos -->
+				<section class="col-4 col-12-mobile">
+					<header>
+						<h2 class="icon solid fa-camera circled"><span class="label">Photos</span></h2>
+					</header>
+					<div class="row gtr-25">
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>
+						</div>
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic11.jpg" alt="" /></a>
+						</div>
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic12.jpg" alt="" /></a>
+						</div>
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic13.jpg" alt="" /></a>
+						</div>
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic14.jpg" alt="" /></a>
+						</div>
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic15.jpg" alt="" /></a>
+						</div>
+					</div>
+				</section>
+
+			</div>
+			<hr />
+			<div class="row">
+				<th:block th:replace="~{layout/footer::footer}"></th:block>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/assets/js/jquery.dropotron.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrolly.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{/assets/js/browser.min.js}"></script>
+<script th:src="@{/assets/js/breakpoints.min.js}"></script>
+<script th:src="@{/assets/js/util.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+<script th:inline="javascript">
+	let i = /*[[${files.size()}]]*/'';
+	let orgSize = i;
+
+	let updateCheck = false;
+	let uploadCheck = false;
+	const updateCnt = $("#updateCnt");
+
+	let num = 0;
+
+	const orgname = document.getElementsByName("orgName");
+	const org_thumbnail = {};
+	for(let j=0;j<orgname.length;j++){
+		org_thumbnail[orgname[j].value] = document.querySelector(".file"+j+"_cont .thumbnail")
+	}
+	let sysname = "";
+	console.log(orgname);
+	console.log(org_thumbnail);
+	function cancelFile(name,systemname){
+		updateCnt.val(updateCnt.val()+"\\"+systemname)
+		let num = name.split("e")[1];
+		if(num == i){
+			return;
+		}
+		if(i != 0){
+			//tr지우기
+			let temp = Number(name.split("e")[1]);
+			//해당 행 지우기
+			$(".r"+temp).remove();
+			//지워진 다음 행 부터 숫자 바꿔주기
+			for(let j=temp+1;j<=i;j++){
+				const el = $("#boardForm tbody").find(".r"+j);
+				el.attr("class","r"+(j-1)+" at");
+
+				el.children('th').text("파일 첨부"+j);
+
+				el.children('td').attr("class","file"+(j-1)+"_cont");
+
+				const fileTag = el.find("input[type='file']");
+				fileTag.attr("name","files");
+				fileTag.attr("id","file"+(j-1));
+
+				el.find("span").attr("id","file"+(j-1)+"name");
+
+				el.find("a")[0].href = "javascript:upload('file"+(j-1)+"')"
+				//el.find("a")[1].href = "javascript:cancelFile('file"+(j-1)+"','"+el.find("span").text()+"')"
+				el.find("a")[1].href = decodeURI(el.find("a")[1].href.replace("'file"+j+"'","'file"+(j-1)+"'"));
+
+			}
+			i--;
+		}
+	}
+	function upload(name,systemname){
+		let temp = $("#"+name+"name").text();
+		num = Number(name.split("e")[1]);
+		if(temp == '선택된 파일 없음'){
+			$("#"+name).click();
+		}
+		else{
+			updateCnt.val(updateCnt.val()+"\\"+systemname)
+			sysname = systemname;
+			$("#"+name).click();
+		}
+	}
+	$("[type='file']").change(function(e){
+		const file = e.target.files[0];
+		const fileTag = e.target;
+
+		if(file == undefined){
+			if(!$("."+fileTag.id+"_cont [name='orgName']").val()){
+				//비어있던 곳에 파일이 업로드 되었다가 취소한 경우
+				cancelFile(fileTag.id);
+			}
+			else{
+				let n = orgname[num].value;
+				let ext = n.split(".").pop();
+				updateCnt.val(updateCnt.val().replaceAll("\\"+sysname,""));
+				console.log(num);
+				$("#file"+num+"name").text(n);
+				if(ext == 'jpeg' || ext == 'jpg' || ext == 'png' || ext == 'gif' || ext == 'webp'){
+					$("."+fileTag.id+"_cont .thumbnail").remove();
+					document.querySelector("."+fileTag.id+"_cont").appendChild(org_thumbnail[n]);
+				}
+				else{
+					if(document.querySelector("."+fileTag.id+"_cont .thumbnail")){
+						$("."+fileTag.id+"_cont .thumbnail").remove();
+					}
+				}
+				sysname = "";
+			}
+		}
+		else{
+			uploadCheck = true;
+			//파일이 없었다가 업로드 한 경우
+			//#file0name
+			$("#"+fileTag.id+"name").text(file.name);
+			//업로드 된 파일의 확장자명
+			let ext = file.name.split(".").pop();
+			if(ext == 'jpeg' || ext == 'jpg' || ext == 'png' || ext == 'gif' || ext == 'webp'){
+				$("."+fileTag.id+"_cont .thumbnail").remove();
+				const reader = new FileReader();
+
+				reader.onload = function(ie){
+					const img = document.createElement("img");
+					img.setAttribute("src",ie.target.result)
+					img.setAttribute("class","thumbnail");
+					document.querySelector("."+fileTag.id+"_cont").appendChild(img);
+				}
+				reader.readAsDataURL(file);
+			}
+			else{
+				const temp = $("."+fileTag.id+"_cont .thumbnail");
+				if(temp != null){
+					temp.remove();
+				}
+			}
+			//가장 마지막 파일 선택 버튼을 눌렀을 때
+			if(num == i){
+				const cloneElement = $(".r"+i).clone(true);
+				i++;
+				cloneElement.appendTo("#boardForm tbody")
+				const lastElement = $("#boardForm tbody").children().last();
+
+				lastElement.attr("class","r"+i+" at");
+				lastElement.children("th").text("파일 첨부"+(i+1));
+				lastElement.children("td").attr("class","file"+i+"_cont");
+
+				lastElement.find("input[type='file']").attr("name","files");
+				lastElement.find("input[type='file']").attr("id","file"+i);
+				lastElement.find("input[type='file']").val("");
+
+				lastElement.find("span").attr("id","file"+i+"name");
+				lastElement.find("span").text("선택된 파일 없음");
+
+				lastElement.find("a")[0].href = "javascript:upload('file"+i+"','')";
+				lastElement.find("a")[1].href = "javascript:cancelFile('file"+i+"','선택된 파일 없음')"
+			}
+
+		}
+	})
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

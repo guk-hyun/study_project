@@ -54,7 +54,7 @@ public class BoardServiceImpl implements BoardService{
 		}
 		else {
 			//방금 등록한 게시글 번호
-			Long boardnum = bmapper.getLastNum(board.getUserid());
+			Long boardnum = bmapper.getLastNum(board.getUserId());
 			boolean flag = false;
 			for(int i=0;i<files.length-1;i++) {
 				MultipartFile file = files[i];
@@ -76,9 +76,9 @@ public class BoardServiceImpl implements BoardService{
 				String path = saveFolder+systemname;
 				
 				FileDTO fdto = new FileDTO();
-				fdto.setBoardnum(boardnum);
-				fdto.setSystemname(systemname);
-				fdto.setOrgname(orgname);
+				fdto.setBoardNum(boardnum);
+				fdto.setSysName(systemname);
+				fdto.setOrgName(orgname);
 				
 				//실제 파일 업로드
 				file.transferTo(new File(path));
@@ -100,7 +100,7 @@ public class BoardServiceImpl implements BoardService{
 		if(row != 1) {
 			return false;
 		}
-		List<FileDTO> org_file_list = fmapper.getFiles(board.getBoardnum());
+		List<FileDTO> org_file_list = fmapper.getFiles(board.getBoardNum());
 		if(org_file_list.size()==0 && (files == null || files.length == 0)) {
 			return true;
 		}
@@ -130,9 +130,9 @@ public class BoardServiceImpl implements BoardService{
 					String path = saveFolder+systemname;
 					
 					FileDTO fdto = new FileDTO();
-					fdto.setBoardnum(board.getBoardnum());
-					fdto.setOrgname(orgname);
-					fdto.setSystemname(systemname);
+					fdto.setBoardNum(board.getBoardNum());
+					fdto.setOrgName(orgname);
+					fdto.setSysName(systemname);
 					
 					file.transferTo(new File(path));
 					
@@ -177,13 +177,13 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public boolean remove(String loginUser, Long boardnum) {
 		BoardDTO board = bmapper.findByNum(boardnum);
-		if(board.getUserid().equals(loginUser)) {
+		if(board.getUserId().equals(loginUser)) {
 			List<FileDTO> files = fmapper.getFiles(boardnum);
 			for(FileDTO fdto : files) {
-				File file = new File(saveFolder,fdto.getSystemname());
+				File file = new File(saveFolder,fdto.getSysName());
 				if(file.exists()) {
 					file.delete();
-					fmapper.deleteBySystemname(fdto.getSystemname());
+					fmapper.deleteBySystemname(fdto.getSysName());
 				}
 			}
 			return bmapper.deleteBoard(boardnum) == 1;
@@ -217,7 +217,7 @@ public class BoardServiceImpl implements BoardService{
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date now = new Date();
 		for(BoardDTO board : list) {
-			Date regdate = df.parse(board.getRegdate());
+			Date regdate = df.parse(board.getBoardRegdate());
 			if(now.getTime() - regdate.getTime() < 1000*60*60*2) {
 				newly_board.add("O");
 			}
@@ -232,7 +232,7 @@ public class BoardServiceImpl implements BoardService{
 	public ArrayList<Integer> getReplyCntList(List<BoardDTO> list) {
 		ArrayList<Integer> reply_cnt_list = new ArrayList<>();
 		for(BoardDTO board : list) {
-			reply_cnt_list.add(rmapper.getTotal(board.getBoardnum()));
+			reply_cnt_list.add(rmapper.getTotal(board.getBoardNum()));
 		}
 		return reply_cnt_list;
 	}
@@ -241,7 +241,7 @@ public class BoardServiceImpl implements BoardService{
 	public ArrayList<String> getRecentReplyList(List<BoardDTO> list) {
 		ArrayList<String> recent_reply = new ArrayList<>();
 		for(BoardDTO board : list) {
-			if(rmapper.getRecentReply(board.getBoardnum()) >= 5) {
+			if(rmapper.getRecentReply(board.getBoardNum()) >= 5) {
 				recent_reply.add("O");
 			}
 			else {

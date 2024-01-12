@@ -28,7 +28,7 @@ public class BoardController {
 	@Autowired @Qualifier("boardServiceImpl")
 	private BoardService service;
 	
-	@GetMapping("list")
+	@GetMapping("board-list")
 	public void list(Criteria cri, Model model) throws Exception {
 		System.out.println(cri);
 		List<BoardDTO> list = service.getBoardList(cri);
@@ -39,34 +39,34 @@ public class BoardController {
 		model.addAttribute("recent_reply",service.getRecentReplyList(list));
 	}
 	
-	@GetMapping("write")
+	@GetMapping("board-write")
 	public void write(@ModelAttribute("cri") Criteria cri,Model model) {
 		System.out.println(cri);
 	}
 	
-	@PostMapping("write")
+	@PostMapping("board-write")
 	public String write(BoardDTO board, MultipartFile[] files, Criteria cri) throws Exception{
-		Long boardnum = 0l;
+		Long boardNum = 0l;
 		if(service.regist(board, files)) {
-			boardnum = service.getLastNum(board.getUserId());
-			return "redirect:/board/get"+cri.getListLink()+"&boardnum="+boardnum;
+			boardNum = service.getLastNum(board.getUserId());
+			return "redirect:/board/board-get"+cri.getListLink()+"&boardNum="+boardNum;
 		}
 		else {
-			return "redirect:/board/list"+cri.getListLink();
+			return "redirect:/board/board-list"+cri.getListLink();
 		}
 	}
 	
-	@GetMapping(value = {"get","modify"})
-	public String get(Criteria cri, Long boardnum, HttpServletRequest req, HttpServletResponse resp, Model model) {
+	@GetMapping(value = {"board-get","board-modify"})
+	public String get(Criteria cri, Long boardNum, HttpServletRequest req, HttpServletResponse resp, Model model) {
 		model.addAttribute("cri",cri);
 		HttpSession session = req.getSession();
-		BoardDTO board = service.getDetail(boardnum);
+		BoardDTO board = service.getDetail(boardNum);
 		model.addAttribute("board",board);
 		System.out.printf("board:"+board);
-		model.addAttribute("files",service.getFileList(boardnum));
+		model.addAttribute("files",service.getFileList(boardNum));
 		String loginUser = (String)session.getAttribute("loginUser");
 		String requestURI = req.getRequestURI();
-		if(requestURI.contains("/get")) {
+		if(requestURI.contains("/baord-get")) {
 			//게시글의 작성자가 로그인된 유저가 아닐 때
 			if(!board.getUserId().equals(loginUser)) {
 				//쿠키 검사
@@ -75,7 +75,7 @@ public class BoardController {
 				if(cookies != null) {
 					for(Cookie cookie : cookies) {
 						//ex) 1번 게시글을 조회하고자 클릭했을 때에는 "read_board1" 쿠키를 찾음
-						if(cookie.getName().equals("read_board"+boardnum)) {
+						if(cookie.getName().equals("read_board"+boardNum)) {
 							read_board = cookie;
 							break;
 						}
@@ -85,9 +85,9 @@ public class BoardController {
 				//첫 조회거나 조회한지 1시간이 지난 후
 				if(read_board == null) {
 					//조회수 증가
-					service.updateReadCount(boardnum);
+					service.updateReadCount(boardNum);
 					//read_board1 이름의 쿠키(유효기간 : 3600초)를 생성해서 클라이언트 컴퓨터에 저장
-					Cookie cookie = new Cookie("read_board"+boardnum, "r");
+					Cookie cookie = new Cookie("read_board"+boardNum, "r");
 					cookie.setMaxAge(3600);
 					resp.addCookie(cookie);
 				}
@@ -96,7 +96,7 @@ public class BoardController {
 		System.out.println("requestURI : "+ requestURI);
 		return requestURI;
 	}
-	@PostMapping("modify")
+	@PostMapping("board-modify")
 	public String modify(BoardDTO board, MultipartFile[] files, String updateCnt, Criteria cri, Model model) throws Exception {
 		if(files != null){
 			for (int i = 0; i < files.length; i++) {
@@ -105,21 +105,21 @@ public class BoardController {
 		}
 		System.out.println("controller : "+updateCnt);
 		if(service.modify(board, files, updateCnt)) {
-			return "redirect:/board/get"+cri.getListLink()+"&boardnum="+board.getBoardNum();
+			return "redirect:/board/board-get"+cri.getListLink()+"&boardNum="+board.getBoardNum();
 		}
 		else {
-			return "redirect:/board/list"+cri.getListLink();
+			return "redirect:/board/board-list"+cri.getListLink();
 		}
 	}
-	@PostMapping("remove")
-	public String remove(Long boardnum, Criteria cri, HttpServletRequest req) {
+	@PostMapping("board-remove")
+	public String remove(Long boardNum, Criteria cri, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		String loginUser = (String)session.getAttribute("loginUser");
-		if(service.remove(loginUser, boardnum)) {
-			return "redirect:/board/list"+cri.getListLink();
+		if(service.remove(loginUser, boardNum)) {
+			return "redirect:/board/board-list"+cri.getListLink();
 		}
 		else {
-			return "redirect:/board/get"+cri.getListLink()+"&boardnum="+boardnum;
+			return "redirect:/board/board-get"+cri.getListLink()+"&boardNum="+boardNum;
 		}
 	}
 	
