@@ -1,0 +1,433 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Untitled</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<noscript><link rel="stylesheet" th:href="@{/assets/css/noscript.css}" /></noscript>
+	<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+	<link rel="stylesheet" th:href="@{/board/css/layout.css}">
+</head>
+<body class="right-sidebar is-preload">
+<div id="page-wrapper">
+
+	<!-- Header -->
+	<div id="header">
+		<th:block th:replace="~{layout/header::header(${session.loginUser})}"></th:block>
+	</div>
+
+	<!-- Main -->
+	<div class="wrapper style1">
+
+		<div class="container">
+			<div class="row gtr-200">
+				<div class="col-8 col-12-mobile" id="content">
+					<article id="main">
+						<header>
+							<h2><a href="#">게시판</a></h2>
+							<p>
+								글 목록
+							</p>
+						</header>
+						<!-- == 추가 시작 == -->
+						<div class="wrap">
+							<!-- 게시글 리스트 띄우는 테이블 -->
+							<table class="list">
+								<tr align="right" valign="middle">
+									<td colspan="6">글 개수 : [[${pageMaker.total}]]</td>
+								</tr>
+								<tr align="center" valign="middle">
+									<th width="8%">번호</th>
+									<th></th>
+									<th>제목</th>
+									<th width="15%">작성자</th>
+									<th width="17%">날짜</th>
+									<th width="10%">조회수</th>
+								</tr>
+								<tr th:if="${list != null and list.size()>0}" th:each="board : ${list}">
+									<td>[[${board.boardnum}]]</td>
+									<td>
+										<sup class="hot" th:if="${recent_reply[boardStat.index] == 'O'}">Hot</sup>
+										<sup class="new" th:if="${newly_board[boardStat.index] == 'O'}">New</sup>
+									</td>
+									<td>
+										<a class="get" th:href="${board.boardnum}">
+											[[${board.boardtitle}]]
+											<span class="reply_cnt" th:text="'['+${reply_cnt_list[boardStat.index]}+']'"></span>
+										</a>
+									</td>
+									<td>[[${board.userid}]]</td>
+									<td>
+										[[${board.regdate}]]
+										<th:block th:if="${board.regdate != board.updatedate}">
+											(수정됨)
+										</th:block>
+									</td>
+									<td>[[${board.readcount}]]</td>
+								</tr>
+								<th:block th:if="${list == null or list.size() == 0}">
+									<tr>
+										<td colspan="6" style="text-align: center; font-size: 20px;">등록된
+											게시글이 없습니다.</td>
+									</tr>
+								</th:block>
+							</table>
+							<br>
+							<!-- 페이징 처리하는 테이블 -->
+							<table class="pagination">
+								<tr align="center" valign="middle">
+									<td>
+										<a class="changePage" th:if="${pageMaker.prev}" th:href="${pageMaker.startPage-1}">&lt;</a>
+										<th:block th:each="i : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}">
+											<span class="nowPage" th:text="${i}" th:if="${pageMaker.cri.pagenum == i}"></span>
+											<a class="changePage" th:href="${i}" th:text="${i}" th:unless="${pageMaker.cri.pagenum == i}"></a>
+										</th:block>
+										<a class="changePage" th:if="${pageMaker.next}" th:href="${pageMaker.endPage+1}">&gt;</a>
+									</td>
+								</tr>
+							</table>
+							<!-- 글쓰기 버튼 배치하는 테이블 -->
+							<table>
+								<tr align="right" valign="middle">
+									<td>
+										<a class="write" th:href="${'/board/write'+pageMaker.cri.listLink}">글쓰기</a>
+									</td>
+								</tr>
+							</table>
+							<form id="searchForm" th:action="@{/board/list}">
+								<div class="search_area">
+									<select name="type">
+										<option value="" th:selected="${pageMaker.cri.type == null}">검색</option>
+										<option value="T" th:selected="${pageMaker.cri.type == 'T'}">제목</option>
+										<option value="C" th:selected="${pageMaker.cri.type == 'C'}">내용</option>
+										<option value="W" th:selected="${pageMaker.cri.type == 'W'}">작성자</option>
+										<option value="TC" th:selected="${pageMaker.cri.type == 'TC'}">제목 또는 내용</option>
+										<option value="TW" th:selected="${pageMaker.cri.type == 'TW'}">제목 또는 작성자</option>
+										<option value="TCW" th:selected="${pageMaker.cri.type == 'TCW'}">제목 또는 내용 또는 작성자</option>
+									</select>
+									<input type="text" name="keyword" id="keyword" th:value="${pageMaker.cri.keyword}">
+									<a href="#" class="button primary">검색</a>
+								</div>
+								<input type="hidden" value="1" name="pagenum">
+								<input type="hidden" value="10" name="amount">
+							</form>
+						</div>
+						<!--<div id="chat-circle" class="btn btn-raised">
+							<div id="chat-overlay"></div>
+							<span class="material-symbols-outlined">speaker_phone</span>
+						</div>
+						<div class="chat-box">
+							<div class="chat-box-header">
+								사용자 채팅 <span class="chat-box-toggle"><span
+									class="material-symbols-outlined">close</span></span>
+							</div>
+							<div class="chat-box-body">
+								<div class="chat-box-overlay"></div>
+								<div class="chat-logs"></div>
+								&lt;!&ndash;chat-log &ndash;&gt;
+							</div>
+							<div class="chat-input">
+								<form>
+									<input type="hidden" id="userid" name="userid" th:value="${session.loginUser}">
+									<span class="echo-receiver"></span> <input type="text"
+																			   id="chat-input" placeholder="Send a message..."
+																			   onkeyup="sendEcho();" />
+									<button type="submit" class="chat-submit" id="chat-submit">
+										<span class="material-symbols-outlined">send</span>
+									</button>
+								</form>
+							</div>
+						</div>-->
+						<form name="pageForm" id="pageForm" th:action="@{/board/list}">
+							<input type="hidden" name="pagenum" th:value="${pageMaker.cri.pagenum}">
+							<input type="hidden" name="amount" th:value="${pageMaker.cri.amount}">
+							<input type="hidden" name="type" th:value="${pageMaker.cri.type}">
+							<input type="hidden" name="keyword" th:value="${pageMaker.cri.keyword}">
+						</form>
+						<!-- == 추가 끝 == -->
+					</article>
+				</div>
+				<div class="col-4 col-12-mobile" id="sidebar">
+					<hr class="first" />
+					<section>
+						<header>
+							<h3><a href="#">Accumsan sed penatibus</a></h3>
+						</header>
+						<p>
+							Dolor sed fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
+							porttitor phasellus tempus cubilia ultrices tempor sagittis  tellus ante diam nec penatibus dolor cras
+							magna tempus feugiat veroeros.
+						</p>
+						<footer>
+							<a href="#" class="button">Learn More</a>
+						</footer>
+					</section>
+					<hr />
+					<section>
+						<header>
+							<h3><a href="#">Sed lorem etiam consequat</a></h3>
+						</header>
+						<p>
+							Tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
+						</p>
+						<div class="row gtr-50">
+							<div class="col-4">
+								<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>
+							</div>
+							<div class="col-8">
+								<h4>Nibh sed cubilia</h4>
+								<p>
+									Amet nullam fringilla nibh nulla convallis tique ante proin.
+								</p>
+							</div>
+							<div class="col-4">
+								<a href="#" class="image fit"><img src="images/pic11.jpg" alt="" /></a>
+							</div>
+							<div class="col-8">
+								<h4>Proin sed adipiscing</h4>
+								<p>
+									Amet nullam fringilla nibh nulla convallis tique ante proin.
+								</p>
+							</div>
+							<div class="col-4">
+								<a href="#" class="image fit"><img src="images/pic12.jpg" alt="" /></a>
+							</div>
+							<div class="col-8">
+								<h4>Lorem feugiat magna</h4>
+								<p>
+									Amet nullam fringilla nibh nulla convallis tique ante proin.
+								</p>
+							</div>
+							<div class="col-4">
+								<a href="#" class="image fit"><img src="images/pic13.jpg" alt="" /></a>
+							</div>
+							<div class="col-8">
+								<h4>Sed tempus fringilla</h4>
+								<p>
+									Amet nullam fringilla nibh nulla convallis tique ante proin.
+								</p>
+							</div>
+							<div class="col-4">
+								<a href="#" class="image fit"><img src="images/pic14.jpg" alt="" /></a>
+							</div>
+							<div class="col-8">
+								<h4>Malesuada fermentum</h4>
+								<p>
+									Amet nullam fringilla nibh nulla convallis tique ante proin.
+								</p>
+							</div>
+						</div>
+						<footer>
+							<a href="#" class="button">Magna Adipiscing</a>
+						</footer>
+					</section>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<article class="col-4 col-12-mobile special">
+					<a href="#" class="image featured"><img src="images/pic07.jpg" alt="" /></a>
+					<header>
+						<h3><a href="#">Gravida aliquam penatibus</a></h3>
+					</header>
+					<p>
+						Amet nullam fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
+						porttitor phasellus tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
+					</p>
+				</article>
+				<article class="col-4 col-12-mobile special">
+					<a href="#" class="image featured"><img src="images/pic08.jpg" alt="" /></a>
+					<header>
+						<h3><a href="#">Sed quis rhoncus placerat</a></h3>
+					</header>
+					<p>
+						Amet nullam fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
+						porttitor phasellus tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
+					</p>
+				</article>
+				<article class="col-4 col-12-mobile special">
+					<a href="#" class="image featured"><img src="images/pic09.jpg" alt="" /></a>
+					<header>
+						<h3><a href="#">Magna laoreet et aliquam</a></h3>
+					</header>
+					<p>
+						Amet nullam fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
+						porttitor phasellus tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
+					</p>
+				</article>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Footer -->
+	<div id="footer">
+		<div class="container">
+			<div class="row">
+
+				<!-- Tweets -->
+				<section class="col-4 col-12-mobile">
+					<header>
+						<h2 class="icon brands fa-twitter circled"><span class="label">Tweets</span></h2>
+					</header>
+					<ul class="divided">
+						<li>
+							<article class="tweet">
+								Amet nullam fringilla nibh nulla convallis tique ante sociis accumsan.
+								<span class="timestamp">5 minutes ago</span>
+							</article>
+						</li>
+						<li>
+							<article class="tweet">
+								Hendrerit rutrum quisque.
+								<span class="timestamp">30 minutes ago</span>
+							</article>
+						</li>
+						<li>
+							<article class="tweet">
+								Curabitur donec nulla massa laoreet nibh. Lorem praesent montes.
+								<span class="timestamp">3 hours ago</span>
+							</article>
+						</li>
+						<li>
+							<article class="tweet">
+								Lacus natoque cras rhoncus curae dignissim ultricies. Convallis orci aliquet.
+								<span class="timestamp">5 hours ago</span>
+							</article>
+						</li>
+					</ul>
+				</section>
+
+				<!-- Posts -->
+				<section class="col-4 col-12-mobile">
+					<header>
+						<h2 class="icon solid fa-file circled"><span class="label">Posts</span></h2>
+					</header>
+					<ul class="divided">
+						<li>
+							<article class="post stub">
+								<header>
+									<h3><a href="#">Nisl fermentum integer</a></h3>
+								</header>
+								<span class="timestamp">3 hours ago</span>
+							</article>
+						</li>
+						<li>
+							<article class="post stub">
+								<header>
+									<h3><a href="#">Phasellus portitor lorem</a></h3>
+								</header>
+								<span class="timestamp">6 hours ago</span>
+							</article>
+						</li>
+						<li>
+							<article class="post stub">
+								<header>
+									<h3><a href="#">Magna tempus consequat</a></h3>
+								</header>
+								<span class="timestamp">Yesterday</span>
+							</article>
+						</li>
+						<li>
+							<article class="post stub">
+								<header>
+									<h3><a href="#">Feugiat lorem ipsum</a></h3>
+								</header>
+								<span class="timestamp">2 days ago</span>
+							</article>
+						</li>
+					</ul>
+				</section>
+
+				<!-- Photos -->
+				<section class="col-4 col-12-mobile">
+					<header>
+						<h2 class="icon solid fa-camera circled"><span class="label">Photos</span></h2>
+					</header>
+					<div class="row gtr-25">
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>
+						</div>
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic11.jpg" alt="" /></a>
+						</div>
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic12.jpg" alt="" /></a>
+						</div>
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic13.jpg" alt="" /></a>
+						</div>
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic14.jpg" alt="" /></a>
+						</div>
+						<div class="col-6">
+							<a href="#" class="image fit"><img src="images/pic15.jpg" alt="" /></a>
+						</div>
+					</div>
+				</section>
+
+			</div>
+			<hr />
+			<div class="row">
+				<th:block th:replace="~{layout/footer::footer}"></th:block>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/assets/js/jquery.dropotron.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrolly.min.js}"></script>
+<script th:src="@{/assets/js/jquery.scrollex.min.js}"></script>
+<script th:src="@{/assets/js/browser.min.js}"></script>
+<script th:src="@{/assets/js/breakpoints.min.js}"></script>
+<script th:src="@{/assets/js/util.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+<script th:inline="javascript">
+	const searchForm = $("#searchForm");
+	const pageForm = $("#pageForm");
+
+	$(".changePage").on("click",function(e){
+		//e(이벤트)의 기본 작동 막기
+		e.preventDefault();
+		let pagenum = $(this).attr("href");
+		pageForm.find("input[name='pagenum']").val(pagenum);
+		pageForm.submit();
+	});
+	$(".get").on("click",function(e){
+		e.preventDefault();
+		let boardnum = $(this).attr("href");
+		let url=/*[[@{/board/get}]]*/'';
+		pageForm.append("<input type='hidden' name='boardNum' value='"+boardnum+"'>")
+		pageForm.attr("action",url);
+		pageForm.attr("method","get");
+		pageForm.submit();
+	})
+
+	$("#searchForm a").on("click",sendit);
+	function sendit(){
+		if(!searchForm.find("option:selected").val()){
+			alert("검색 기준을 선택하세요!");
+			return false;
+		}
+		if(!$("input[name='keyword']").val()){
+			alert("키워드를 입력하세요!");
+			return false;
+		}
+		searchForm.submit();
+	}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
