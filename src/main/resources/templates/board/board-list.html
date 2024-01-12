@@ -46,25 +46,25 @@
 									<th width="10%">조회수</th>
 								</tr>
 								<tr th:if="${list != null and list.size()>0}" th:each="board : ${list}">
-									<td>[[${board.boardnum}]]</td>
+									<td>[[${board.boardNum}]]</td>
 									<td>
 										<sup class="hot" th:if="${recent_reply[boardStat.index] == 'O'}">Hot</sup>
 										<sup class="new" th:if="${newly_board[boardStat.index] == 'O'}">New</sup>
 									</td>
 									<td>
-										<a class="get" th:href="${board.boardnum}">
-											[[${board.boardtitle}]]
+										<a class="get" th:href="${board.boardNum}">
+											[[${board.boardTitle}]]
 											<span class="reply_cnt" th:text="'['+${reply_cnt_list[boardStat.index]}+']'"></span>
 										</a>
 									</td>
-									<td>[[${board.userid}]]</td>
+									<td>[[${board.userId}]]</td>
 									<td>
-										[[${board.regdate}]]
-										<th:block th:if="${board.regdate != board.updatedate}">
+										[[${board.boardRegdate}]]
+										<th:block th:if="${board.boardRegdate != board.boardUpdate}">
 											(수정됨)
 										</th:block>
 									</td>
-									<td>[[${board.readcount}]]</td>
+									<td>[[${board.boardViewcnt}]]</td>
 								</tr>
 								<th:block th:if="${list == null or list.size() == 0}">
 									<tr>
@@ -95,7 +95,7 @@
 									</td>
 								</tr>
 							</table>
-							<form id="searchForm" th:action="@{/board/list}">
+							<form id="searchForm" th:action="@{/board/board-list}">
 								<div class="search_area">
 									<select name="type">
 										<option value="" th:selected="${pageMaker.cri.type == null}">검색</option>
@@ -139,7 +139,7 @@
 								</form>
 							</div>
 						</div>-->
-						<form name="pageForm" id="pageForm" th:action="@{/board/list}">
+						<form name="pageForm" id="pageForm" th:action="@{/board/board-list}">
 							<input type="hidden" name="pagenum" th:value="${pageMaker.cri.pagenum}">
 							<input type="hidden" name="amount" th:value="${pageMaker.cri.amount}">
 							<input type="hidden" name="type" th:value="${pageMaker.cri.type}">
@@ -400,7 +400,7 @@
 	$(".get").on("click",function(e){
 		e.preventDefault();
 		let boardnum = $(this).attr("href");
-		let url=/*[[@{/board/get}]]*/'';
+		let url=/*[[@{/board/board-get}]]*/'';
 		pageForm.append("<input type='hidden' name='boardNum' value='"+boardnum+"'>")
 		pageForm.attr("action",url);
 		pageForm.attr("method","get");

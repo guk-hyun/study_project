@@ -33,10 +33,13 @@ public class BoardController {
 		System.out.println(cri);
 		List<BoardDTO> list = service.getBoardList(cri);
 		model.addAttribute("list",list);
+		System.out.println("list :" + list);
 		model.addAttribute("pageMaker",new PageDTO(service.getTotal(cri), cri));
 		model.addAttribute("newly_board",service.getNewlyBoardList(list));
 		model.addAttribute("reply_cnt_list",service.getReplyCntList(list));
+		System.out.println("reply_cnt_list :" + service.getReplyCntList(list));
 		model.addAttribute("recent_reply",service.getRecentReplyList(list));
+		System.out.println("recent_reply :" + service.getRecentReplyList(list));
 	}
 	
 	@GetMapping("board-write")
