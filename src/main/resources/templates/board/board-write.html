@@ -9,6 +9,11 @@
 	<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
 	<link rel="stylesheet" th:href="@{/board/css/layout.css}">
 </head>
+<style>
+	.thumbnail {
+		width: 50%;
+	}
+</style>
 <body class="right-sidebar is-preload">
 <div id="page-wrapper">
 
@@ -32,7 +37,7 @@
 						</header>
 						<!-- == 추가 시작 == -->
 						<div id="wrap">
-							<form id="boardForm" method="post" name="boardForm" th:action="@{/board/write}" enctype="multipart/form-data">
+							<form id="boardForm" method="post" name="boardForm" th:action="@{/board/board-write}" enctype="multipart/form-data">
 								<input type="hidden" th:value="${cri.pagenum}" name="pagenum">
 								<input type="hidden" th:value="${cri.amount}" name="amount">
 								<input type="hidden" th:value="${cri.type}" name="type">
@@ -50,12 +55,27 @@
 											<input type="text" name="userId" size="50" maxlength="50" th:value="${session.loginUser}" readonly>
 										</td>
 									</tr>
+									<tr style="height:30px;">
+										<th style="text-align:center; width:150px;">카테고리</th>
+										<td>
+											<select name="boardCategory">
+												<option value="지식/팁" >지식/팁</option>
+												<option value="한식" >한식</option>
+												<option value="중식" >중식</option>
+												<option value="일식" >일식</option>
+												<option value="양식" >양식</option>
+											</select>
+										</td>
+									</tr>
+
 									<tr style="height:300px;">
 										<th style="text-align:center; width:150px;">내 용</th>
 										<td>
 											<textarea name="boardContent" style="width:700px;height:290px;resize:none;"></textarea>
 										</td>
 									</tr>
+
+
 									<tr class="r0 at">
 										<th>파일 첨부1</th>
 										<td class="file0_cont">

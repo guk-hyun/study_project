@@ -3,6 +3,7 @@ package com.study.study_project.controller;
 import com.study.study_project.domain.dto.BoardDTO;
 import com.study.study_project.domain.dto.Criteria;
 import com.study.study_project.domain.dto.PageDTO;
+import com.study.study_project.domain.dto.UserDTO;
 import com.study.study_project.service.BoardService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,18 +30,26 @@ public class BoardController {
 	private BoardService service;
 	
 	@GetMapping("board-list")
-	public void list(Criteria cri, Model model) throws Exception {
+//	public void list(Criteria cri, Model model) throws Exception {
+//		System.out.println(cri);
+//		List<BoardDTO> list = service.getBoardList(cri);
+//		model.addAttribute("list",list);
+//		model.addAttribute("pageMaker",new PageDTO(service.getTotal(cri), cri));
+//		model.addAttribute("newly_board",service.getNewlyBoardList(list));
+//		model.addAttribute("reply_cnt_list",service.getReplyCntList(list));
+//		model.addAttribute("recent_reply",service.getRecentReplyList(list));
+//	}
+	public void list(Criteria cri, Model model,HttpServletRequest req) throws Exception {
+		req.getSession().setAttribute("loginUser", "cjw2500");
 		System.out.println(cri);
 		List<BoardDTO> list = service.getBoardList(cri);
 		model.addAttribute("list",list);
-		System.out.println("list :" + list);
 		model.addAttribute("pageMaker",new PageDTO(service.getTotal(cri), cri));
 		model.addAttribute("newly_board",service.getNewlyBoardList(list));
 		model.addAttribute("reply_cnt_list",service.getReplyCntList(list));
-		System.out.println("reply_cnt_list :" + service.getReplyCntList(list));
 		model.addAttribute("recent_reply",service.getRecentReplyList(list));
-		System.out.println("recent_reply :" + service.getRecentReplyList(list));
 	}
+
 	
 	@GetMapping("board-write")
 	public void write(@ModelAttribute("cri") Criteria cri,Model model) {
@@ -66,7 +75,7 @@ public class BoardController {
 		BoardDTO board = service.getDetail(boardNum);
 		model.addAttribute("board",board);
 		System.out.printf("board:"+board);
-		model.addAttribute("files",service.getFileList(boardNum));
+		model.addAttribute("files",service.getFileList(boardNum, board.getBoardCategory()));
 		String loginUser = (String)session.getAttribute("loginUser");
 		String requestURI = req.getRequestURI();
 		if(requestURI.contains("/baord-get")) {
@@ -115,10 +124,10 @@ public class BoardController {
 		}
 	}
 	@PostMapping("board-remove")
-	public String remove(Long boardNum, Criteria cri, HttpServletRequest req) {
+	public String remove(Long boardNum,String boardCategory, Criteria cri, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		String loginUser = (String)session.getAttribute("loginUser");
-		if(service.remove(loginUser, boardNum)) {
+		if(service.remove(loginUser, boardNum, boardCategory)) {
 			return "redirect:/board/board-list"+cri.getListLink();
 		}
 		else {

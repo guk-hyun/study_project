@@ -19,8 +19,8 @@ public interface BoardService {
 	public void updateReadCount(Long boardnum);
 	
 	//delete
-	public boolean remove(String loginUser, Long boardnum);
-	
+	public boolean remove(String loginUser, Long boardnum, String boardCategory);
+
 	//select
 	Long getTotal(Criteria cri);
 	List<BoardDTO> getBoardList(Criteria cri);
@@ -29,7 +29,7 @@ public interface BoardService {
 	ArrayList<String> getNewlyBoardList(List<BoardDTO> list) throws Exception;
 	ArrayList<Integer> getReplyCntList(List<BoardDTO> list);
 	ArrayList<String> getRecentReplyList(List<BoardDTO> list);
-	List<FileDTO> getFileList(Long boardnum);
+	List<FileDTO> getFileList(Long boardnum, String boardCategory);
 
 	ResponseEntity<Resource> getThumbnailResource(String systemname) throws Exception;
 

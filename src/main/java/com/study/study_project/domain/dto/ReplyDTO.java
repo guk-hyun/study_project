@@ -6,7 +6,7 @@ import lombok.Data;
 public class ReplyDTO {
 	private Long replyNum;
 	private String userId;
-	private Long boardCategory;
+	private String boardCategory;
 	private Long boardNum;
 	private String replyContent;
 	private String replyRegdate;

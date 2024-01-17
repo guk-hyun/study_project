@@ -18,11 +18,11 @@ const replyService = (function(){
 	}
 	
 	function selectAll(data,callback){
-		let boardnum = data.boardnum;
+		let boardNum = data.boardNum;
 		let pagenum = data.pagenum;
 		
 		$.getJSON(
-			"/reply/pages/"+boardnum+"/"+pagenum,
+			"/reply/pages/"+boardNum+"/"+pagenum,
 			function(data){
 				//data : {replyCnt:댓글개수, list:[....]}
 				callback(data.replyCnt, data.list);
@@ -30,10 +30,10 @@ const replyService = (function(){
 		)
 	}
 	
-	function drop(replynum,callback,error){
+	function drop(replyNum,callback,error){
 		$.ajax({
 			type:"DELETE",
-			url:"/reply/"+replynum,
+			url:"/reply/"+replyNum,
 			success:function(result,status,xhr){
 				callback(result);
 			},
@@ -46,7 +46,7 @@ const replyService = (function(){
 	function update(reply,callback,error){
 		$.ajax({
 			type:"PUT",
-			url:"/reply/"+reply.replynum,
+			url:"/reply/"+reply.replyNum,
 			data:JSON.stringify(reply),
 			contentType:"application/json;charset=utf-8",
 			success:function(result){
@@ -63,14 +63,14 @@ const replyService = (function(){
 	}
 	
 	function fmtTime(reply){
-		const regdate = reply.regdate;
-		const updatedate = reply.updatedate;
+		const replyRegdate = reply.replyRegdate;
+		const replyUpdate = reply.replyUpdate;
 		
 		const now = new Date();
 		
-		const check = regdate == updatedate;
+		const check = replyRegdate == replyUpdate;
 		
-		const dateObj = new Date(check ? regdate : updatedate);
+		const dateObj = new Date(check ? replyRegdate : replyUpdate);
 		//date객체.getTime() : date객체가 가지고 있는 시간 정보를 밀리초 단위로 추출
 		let gap = now.getTime() - dateObj.getTime();
 		

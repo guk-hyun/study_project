@@ -2,8 +2,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.study_project.mapper.ReplyMapper">
 	<insert id="insertReply">
-		insert into reply(reply_content, user_id, board_num)
-		values(#{replyContent},#{userId},#{boardNum})
+		insert into reply(reply_content, user_id, board_num, board_category)
+		values(#{replyContent}, #{userId}, #{boardNum}, #{boardCategory})
 	</insert>
 	
 	<update id="updateReply">
@@ -19,7 +19,7 @@
 	</delete>
 	
 	<select id="getTotal">
-		select count(*) from reply where board_num=#{board_num}
+		select count(*) from reply where board_num=#{boardNum}
 	</select>
 	<select id="getRecentReply">
 		<![CDATA[

@@ -23,15 +23,15 @@
 	</sql>
 	
 	<insert id="insertBoard">
-		insert into board (board_title,board_content,user_id)
-		values(#{boardTitle},#{boardContent},#{userId})
+		insert into board (board_title,board_content,user_id,board_category)
+		values(#{boardTitle},#{boardContent},#{userId},#{boardCategory})
 	</insert>
 	
 <!--	<update id="updateReadCount">-->
 <!--		update board set readcount = readcount+1 where boardnum = #{boardnum}-->
 <!--	</update>-->
 	<update id="updateBoard">
-		update board set board_title=#{boardTitle}, board_content=#{boardContent},board_update=now()
+		update board set board_category=#{boardCategory}, board_title=#{boardTitle}, board_content=#{boardContent}, board_update=now()
 		where board_num=#{boardNum}
 	</update>
 	

@@ -23,17 +23,17 @@ public class ReplyServiceImpl implements ReplyService{
 	}
 
 	@Override
-	public boolean remove(Long replynum) {
-		return rmapper.deleteReply(replynum) == 1;
+	public boolean remove(Long replyNum) {
+		return rmapper.deleteReply(replyNum) == 1;
 	}
 
 	@Override
-	public ReplyPageDTO getList(Criteria cri, Long boardnum) {
-		return new ReplyPageDTO(rmapper.getTotal(boardnum), rmapper.getList(cri, boardnum));
+	public ReplyPageDTO getList(Criteria cri, Long boardNum) {
+		return new ReplyPageDTO(rmapper.getTotal(boardNum), rmapper.getList(cri, boardNum));
 	}
 
 	@Override
-	public Long getLastNum(String userid) {
-		return rmapper.getLastNum(userid);
+	public Long getLastNum(String userId) {
+		return rmapper.getLastNum(userId);
 	}
 }

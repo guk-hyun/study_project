@@ -8,8 +8,7 @@ public class BoardDTO {
 	private String userId;
 	private String boardTitle;
 	private String boardCategory;
-	private String foodCategory;
-	private String boardContents;
+	private String boardContent;
 	private String boardRegdate;
 	private String boardUpdate;
 	private int boardViewcnt;

@@ -9,6 +9,11 @@
 	<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
 	<link rel="stylesheet" th:href="@{/board/css/layout.css}">
 </head>
+<style>
+	.thumbnail {
+		width: 50%;
+	}
+</style>
 <body class="right-sidebar is-preload">
 <div id="page-wrapper">
 
@@ -46,9 +51,15 @@
 											<input type="text" name="userId" size="50" maxlength="50" th:value="${board.userId}" readonly>
 										</td>
 									</tr>
+									<tr style="height:30px;">
+										<th style="text-align:center; width:150px;">카테고리</th>
+										<td>
+											<input type="text" name="boardCategory" size="50" maxlength="50" th:value="${board.boardCategory}" readonly>
+										</td>
+									</tr>
 									<tr>
 										<th>조회수</th>
-										<td>[[${board.readcount}]]</td>
+										<td>[[${board.boardViewcnt}]]</td>
 									</tr>
 									<tr style="height:300px;">
 										<th style="text-align:center; width:150px;">내 용</th>
@@ -68,7 +79,7 @@
 												<tr th:if="${ext == 'jpg' or ext == 'jpeg' or ext == 'png' or ext == 'gif' or ext == 'webp'}">
 													<td></td>
 													<td>
-														<img style="width:100%;" th:src="@{/board/thumbnail (systemname=${file.sysName})}">
+														<img class="thumbnail" th:src="@{/board/thumbnail (systemname=${file.sysName})}">
 													</td>
 												</tr>
 											</th:block>
@@ -85,8 +96,9 @@
 								<tr align="right" valign="middle">
 									<td>
 										<th:block th:if="${board.userId == session.loginUser}">
-											<form name="boardForm" method="post" th:action="@{/board/remove}">
+											<form name="boardForm" method="post" th:action="@{/board/board-remove}">
 												<input name="boardNum" th:value="${board.boardNum}" type="hidden">
+												<input name="boardCategory" th:value="${board.boardCategory}" type="hidden">
 												<input name="pagenum" th:value="${cri.pagenum}" type="hidden">
 												<input name="amount" th:value="${cri.amount}" type="hidden">
 												<input name="type" th:value="${cri.type}" type="hidden">
@@ -95,7 +107,7 @@
 												<a href="javascript:document.boardForm.submit()">삭제</a>
 											</form>
 										</th:block>
-										<a th:href="${'/board/list'+cri.listLink}">목록</a>
+										<a th:href="${'/board/board-list'+cri.listLink}">목록</a>
 									</td>
 								</tr>
 							</table>
@@ -360,9 +372,11 @@
 <script th:src="@{/assets/js/breakpoints.min.js}"></script>
 <script th:src="@{/assets/js/util.js}"></script>
 <script th:src="@{/assets/js/main.js}"></script>
+<script th:src="@{/assets/js/reply.js}"></script>
 <script th:inline="javascript">
 	const loginUser = /*[[${session.loginUser}]]*/'';
 	const boardNum = /*[[${board.boardNum}]]*/'';
+	const boardCategory = /*[[${board.boardCategory}]]*/'';
 	const replies = $(".replies")
 	const page = $(".page")
 	let nowpage = 0;
@@ -382,7 +396,7 @@
 		let replyContent = $("[name='replyContent']").val();
 
 		replyService.add(
-			{"boardNum":boardNum,"userId":loginUser, "replyContent":replyContent},
+			{"boardNum":boardNum, "boardCategory":boardCategory, "userId":loginUser, "replyContent":replyContent},
 			function(result){
 				alert("등록!");
 				showList(1);
@@ -408,12 +422,12 @@
 					str += '<li style="clear:both;" class="li'+list[i].replyNum+'">';
 					str += '<div style="display:inline; float:left; width:80%;">';
 					//<strong class="userid3">apple</strong>
-					str += '<strong class="userid'+list[i].replyNum+'">'+list[i].userid+'</strong>';
+					str += '<strong class="userId'+list[i].replyNum+'">'+list[i].userId+'</strong>';
 					//<p class="reply3">댓글내용</p>
 					str += '<p class="reply'+list[i].replyNum+'">'+list[i].replyContent+'</p>';
 					str += '</div><div style="text-align:right;">'
 					str += '<strong>'+replyService.displayTime(list[i])+'</strong>'
-					if(list[i].userid == loginUser){
+					if(list[i].userId == loginUser){
 						//<a href="3" class="modify">수정</a>
 						str += '<a href="'+list[i].replyNum+'" class="modify">수정</a>';
 						str += '<a href="'+list[i].replyNum+'" class="mfinish" style="display:none;">수정 완료</a>';
@@ -513,7 +527,7 @@
 			return;
 		}
 		replyService.modify(
-			{replyNum:replyNum, replyContent:replyContent, boardNum:boardNum, userid:loginUser},
+			{replyNum:replyNum, replyContent:replyContent, boardNum:boardNum, userId:loginUser},
 			function(result){
 				if(result == "success"){
 					alert(replyNum+"번 댓글 수정 완료!");
@@ -526,7 +540,7 @@
 
 	function modify(){
 		const boardForm = document.boardForm;
-		boardForm.setAttribute("action",/*[[@{/board/modify}]]*/'');
+		boardForm.setAttribute("action",/*[[@{/board/board-modify}]]*/'');
 		boardForm.setAttribute("method","get");
 		boardForm.submit();
 	}

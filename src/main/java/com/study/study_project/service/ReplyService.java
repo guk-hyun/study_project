@@ -9,9 +9,9 @@ public interface ReplyService {
 	
 	boolean modify(ReplyDTO reply);
 	
-	boolean remove(Long replynum);
+	boolean remove(Long replyNum);
 	
-	ReplyPageDTO getList(Criteria cri, Long boardnum);
+	ReplyPageDTO getList(Criteria cri, Long boardNum);
 	
-	Long getLastNum(String userid);
+	Long getLastNum(String userId);
 }
