@@ -40,6 +40,7 @@
 								<tr align="center" valign="middle">
 									<th width="8%">번호</th>
 									<th></th>
+									<th>카테고리</th>
 									<th>제목</th>
 									<th width="15%">작성자</th>
 									<th width="17%">날짜</th>
@@ -50,6 +51,12 @@
 									<td>
 										<sup class="hot" th:if="${recent_reply[boardStat.index] == 'O'}">Hot</sup>
 										<sup class="new" th:if="${newly_board[boardStat.index] == 'O'}">New</sup>
+									</td>
+									<td>
+										[[${board.boardCategory}]]
+<!--										<div>-->
+<!--											<input readonly  name="boardCategory" type="text" id="boardCategory" class="boardCategory" placeholder="카테고리" th:value="${board.boardCategory}" >-->
+<!--										</div>-->
 									</td>
 									<td>
 										<a class="get" th:href="${board.boardNum}">
@@ -91,7 +98,7 @@
 							<table>
 								<tr align="right" valign="middle">
 									<td>
-										<a class="write" th:href="${'/board/write'+pageMaker.cri.listLink}">글쓰기</a>
+										<a class="write" th:href="${'/board/board-write'+pageMaker.cri.listLink}">글쓰기</a>
 									</td>
 								</tr>
 							</table>

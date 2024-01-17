@@ -6,6 +6,6 @@ import lombok.Data;
 public class FileDTO {
 	private String sysName;
 	private String orgName;
-	private Long boardCategory;
+	private String boardCategory;
 	private Long boardNum;
 }

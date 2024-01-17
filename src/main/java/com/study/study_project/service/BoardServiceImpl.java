@@ -74,11 +74,12 @@ public class BoardServiceImpl implements BoardService{
 
 				//실제 저장될 파일의 경로
 				String path = saveFolder+systemname;
-				
+
 				FileDTO fdto = new FileDTO();
 				fdto.setBoardNum(boardnum);
 				fdto.setSysName(systemname);
 				fdto.setOrgName(orgname);
+				fdto.setBoardCategory(board.getBoardCategory());
 				
 				//실제 파일 업로드
 				file.transferTo(new File(path));
@@ -100,7 +101,9 @@ public class BoardServiceImpl implements BoardService{
 		if(row != 1) {
 			return false;
 		}
-		List<FileDTO> org_file_list = fmapper.getFiles(board.getBoardNum());
+		System.out.println("board.getBoardNum() : "+board.getBoardNum()+"board.getBoardCategory() : "+board.getBoardCategory());
+		List<FileDTO> org_file_list = fmapper.getFiles(board.getBoardNum(), board.getBoardCategory());
+		System.out.println("org_file_list : "+ org_file_list);
 		if(org_file_list.size()==0 && (files == null || files.length == 0)) {
 			return true;
 		}
@@ -133,7 +136,8 @@ public class BoardServiceImpl implements BoardService{
 					fdto.setBoardNum(board.getBoardNum());
 					fdto.setOrgName(orgname);
 					fdto.setSysName(systemname);
-					
+					fdto.setBoardCategory(board.getBoardCategory());
+
 					file.transferTo(new File(path));
 					
 					flag = fmapper.insertFile(fdto) == 1;
@@ -174,11 +178,15 @@ public class BoardServiceImpl implements BoardService{
 		bmapper.updateReadCount(boardnum);
 	}
 
+
 	@Override
-	public boolean remove(String loginUser, Long boardnum) {
-		BoardDTO board = bmapper.findByNum(boardnum);
+	public boolean remove(String loginUser, Long boardNum, String boardCategory) {
+		System.out.println("boardNum1 : "+ boardNum);
+		System.out.println("boardCategory1 : "+ boardCategory);
+		BoardDTO board = bmapper.findByNum(boardNum);
 		if(board.getUserId().equals(loginUser)) {
-			List<FileDTO> files = fmapper.getFiles(boardnum);
+			List<FileDTO> files = fmapper.getFiles(boardNum, boardCategory);
+			System.out.println("files : "+files);
 			for(FileDTO fdto : files) {
 				File file = new File(saveFolder,fdto.getSysName());
 				if(file.exists()) {
@@ -186,7 +194,7 @@ public class BoardServiceImpl implements BoardService{
 					fmapper.deleteBySystemname(fdto.getSysName());
 				}
 			}
-			return bmapper.deleteBoard(boardnum) == 1;
+			return bmapper.deleteBoard(boardNum) == 1;
 		}
 		return false;
 	}
@@ -252,8 +260,8 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<FileDTO> getFileList(Long boardnum) {
-		return fmapper.getFiles(boardnum);
+	public List<FileDTO> getFileList(Long boardNum, String boardCategory) {
+		return fmapper.getFiles(boardNum,boardCategory);
 	}
 	
 	@Override
