@@ -2,7 +2,7 @@
 <html lang="en">
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>로그인</title>
+    <title>일반 회원가입</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
     <link rel="stylesheet" th:href="@{/assets/css/main.css}"/>
@@ -20,35 +20,7 @@
         justify-content: space-evenly;
         margin-top: 10px;
     }
-    #loginarea.hidden{
-        display: none;
-    }
-    #signarea.hidden{
-        display: none;
-    }
-    #signarea .signupForm .signup {
-        display: inline-block;
-        width:300px;
-        height: 53.24px;
-        margin-top:10px;
-        font-weight: 600;
-        border: 2px solid #df7366;
-        border-radius: 0.5em;
-        line-height: 53.24px;
-        margin-left: 10px;
-    }
 
-
-    #signarea .signupForm .signup.kakaosign{
-        background-color: #f9e000;
-        color: black;
-        border: none;
-
-    }
-    /*.signupForm{*/
-    /*    display: flex;*/
-    /*    justify-content: center;*/
-    /*}*/
 
 
 </style>
@@ -61,10 +33,9 @@
         <!-- Inner -->
         <div class="inner">
             <header style="width:300px;">
-                <div id="loginarea">
                     <h1><a href="/" id="logo">Login</a></h1>
                     <hr/>
-                    <div class="loginForm">
+                    <div class="joinForm">
                         <form>
                             <input id="loginMail" type="text" placeholder="이메일을 입력하세요.">
                             <input id="loginPw" type="password" placeholder="비밀번호를 입력하세요.">
@@ -78,16 +49,6 @@
                             <div class="etcArea"><a href="javascript:hiddenlogin();">회원가입</a><a href="">아이디/비밀번호찾기</a></div>
                         </form>
                     </div>
-                </div>
-                <div id="signarea" class="hidden">
-                    <h1><a href="/" >Sign up</a></h1>
-                    <hr/>
-                    <div class="signupForm">
-                        <div><a class="signup" href="#">일반 회원가입</a></div>
-                        <div><a class="signup kakaosign" href="#">카카오톡으로 회원가입</a></div>
-                    </div>
-                    <a href="/user/login" style="display:inline-block; margin-top: 20px;">로그인 하러 가기</a>
-                </div>
 
             </header>
 
