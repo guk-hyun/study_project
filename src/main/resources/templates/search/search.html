@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>search</title>
+	<link rel="stylesheet" th:href="@{/assets/css/noscript.css}">
+	<link rel="stylesheet" th:href="@{/assets/css/main.css}" />
+	<style>
+		#wrap {
+			width: 1024px;
+			margin: 0 auto;
+		}
+
+		.all_section {
+			box-sizing: border-box;
+			padding: 10px;
+			border: 1px solid black;
+			width: 1024px;
+			height: 800px;
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.sub_section_1 {
+			border: 1px solid black;
+			width: 300px;
+		}
+
+		.search_btn {
+			width: 60px;
+			height: 30px;
+			text-align: center;
+		}
+
+		.sub_section_2 {
+			border: 1px solid black;
+			width: 690px;
+		}
+
+		.food_list {
+			box-sizing: border-box;
+			border: 1px solid black;
+			padding: 10px;
+			margin: 5px;
+			height: 150px;
+		}
+
+		.search_area {
+			box-sizing: border-box;
+			padding: 10px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="wrap">
+		<div class="all_section">
+			<div class="sub_section_1">
+				<div class="search_area">
+					<input type="text" class="search">
+					<input type="button" value="검색" class="search_btn" onclick="search()">
+				</div>
+			</div>
+			<div class="sub_section_2" onclick>
+
+			</div>
+		</div>
+	</div>
+
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	const food_list = document.getElementsByClassName("sub_section_2");
+	const key = document.getElementsByClassName("search");
+
+	function search() {
+		$.ajax({
+			url: "searchlist",
+			data: {"key": key[0].value},
+			method: "GET",
+			contentType: "application/json;charset=utf-8",
+			success: function (data) {
+				const food_code = data;
+				let txt = ""
+				for (let food of food_code) {
+					if (food[8] != undefined) {
+						txt += "<div class='food_list' onclick=get_food('" + food[8] + "')>"
+						txt += food[0] + food[3] +food[8]
+						txt += "</div>"
+					}
+					food_list[0].innerHTML = txt;
+					console.log(food_list)
+					console.log(key[0].value)
+				}
+			}
+		})
+	}
+
+	function get_food(food_code) {
+		window.location.href = '/search/get?foodCode=' + food_code;
+	}
+
+</script>
+
+</html>
