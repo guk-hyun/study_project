@@ -89,7 +89,7 @@
 				for (let food of food_code) {
 					if (food[8] != undefined) {
 						txt += "<div class='food_list' onclick=get_food('" + food[8] + "')>"
-						txt += food[0] + food[3] +food[8]
+						txt += food[0] + food[3] +food[8] + food[13]
 						txt += "</div>"
 					}
 					food_list[0].innerHTML = txt;

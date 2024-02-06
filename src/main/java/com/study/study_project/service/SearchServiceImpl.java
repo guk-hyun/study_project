@@ -5,17 +5,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.study.study_project.mapper.SearchMapper;
 
 @Service
 public class SearchServiceImpl implements SearchService {
+	@Autowired
+	private SearchMapper smapper;
 
 	public final static String serviceKey = "d696952ee3d6dce4877e754f0537c1d7343985ded810a8e43de7a6478fcf9d14/";
 
@@ -64,6 +67,15 @@ public class SearchServiceImpl implements SearchService {
 				list.add(rowObject.get("QNT").toString()); // 분량
 				list.add(rowObject.get("NATION_CODE").toString()); // 유형 코드
 				list.add(rowObject.get("COOKING_TIME").toString()); // 조리 시간
+				
+				if(smapper.select_code(rowObject.get("RECIPE_ID")) == null){
+					smapper.insert_code(rowObject.get("RECIPE_ID").toString());
+					String up_cnt = smapper.select_cnt(rowObject.get("RECIPE_ID"));
+					list.add(up_cnt);
+				}else {
+					String up_cnt = smapper.select_cnt(rowObject.get("RECIPE_ID"));
+					list.add(up_cnt);
+				}
 			}
 			// 다른 필요한 데이터도 추가 가능
 			all.add(list);
@@ -72,9 +84,7 @@ public class SearchServiceImpl implements SearchService {
 	}
 
 	@Override
-	public ArrayList<List<String>> getlist2(int foodcode) throws IOException {
-
-		System.out.println(foodcode);
+	public ArrayList<List<String>> number(String foodcode) throws IOException {
 
 		ArrayList<List<String>> all = new ArrayList<>();
 
@@ -114,7 +124,7 @@ public class SearchServiceImpl implements SearchService {
 	}
 
 	@Override
-	public ArrayList<List<String>> getlist3(int foodcode) throws IOException {
+	public ArrayList<List<String>> material(String foodcode) throws IOException {
 
 		ArrayList<List<String>> all = new ArrayList<>();
 
@@ -154,4 +164,5 @@ public class SearchServiceImpl implements SearchService {
 		}
 		return all;
 	}
+
 }

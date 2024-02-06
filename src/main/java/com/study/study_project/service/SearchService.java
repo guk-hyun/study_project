@@ -8,8 +8,9 @@ public interface SearchService {
 
 	ArrayList<List<String>> getlist(String key) throws IOException;
 
-	ArrayList<List<String>> getlist2(int foodCode) throws IOException;
+	ArrayList<List<String>> number(String foodCode) throws IOException;
 
-	ArrayList<List<String>> getlist3(int foodCode) throws IOException;
+	ArrayList<List<String>> material(String foodCode) throws IOException;
+
 
 }

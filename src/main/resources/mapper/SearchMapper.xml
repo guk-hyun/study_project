@@ -1,0 +1,16 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.study.study_project.mapper.SearchMapper">
+	  <insert id="insert_code">
+		 insert into upcnt(Recipe_number,up_cnt) value (#{num},0)
+	  </insert>
+	  <select id="select_code">
+		  select * from upcnt where Recipe_number = #{object}
+	  </select>
+	  <select id="select_cnt">
+		  select up_cnt from upcnt where Recipe_number = #{object} 
+	  </select>
+	  <update id="upCnt">
+		  update upcnt set up_cnt = up_cnt + "1" where Recipe_number = #{foodCode}
+	  </update>
+  </mapper>

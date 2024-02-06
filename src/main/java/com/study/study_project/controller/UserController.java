@@ -40,8 +40,9 @@ public class UserController {
 	public void replaceLogin(){}
 
 	@PostMapping("login")
-	public String login(String userid, String userpw, HttpServletRequest req) {
-		UserDTO loginUser = service.login(userid, userpw);
+	public String login(String loginMail, String loginPw, HttpServletRequest req) {
+		System.out.println(loginMail + loginPw);
+		UserDTO loginUser = service.login(loginMail, loginPw);
 		if(loginUser != null) {
 			req.getSession().setAttribute("loginUser", loginUser.getUserid());
 			return "redirect:/";
